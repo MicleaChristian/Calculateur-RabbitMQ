@@ -72,6 +72,7 @@ Ce projet implémente un **système de calcul distribué avancé** utilisant Rab
 
 **Le moyen le plus simple pour tout démarrer en une seule commande :**
 
+#### 🐧 Linux / macOS / WSL
 ```bash
 # Cloner le projet
 git clone <repository-url>
@@ -81,13 +82,38 @@ cd "Projet RabbitMQ Kafka"
 ./setup_and_run.sh
 ```
 
-**✨ Le script `setup_and_run.sh` automatise complètement :**
+#### 🪟 Windows (Command Prompt)
+```cmd
+REM Cloner le projet
+git clone <repository-url>
+cd "Projet RabbitMQ Kafka"
+
+REM Script automatique Windows
+setup_and_run.bat
+```
+
+#### 🪟 Windows (PowerShell) - Recommandé
+```powershell
+# Cloner le projet
+git clone <repository-url>
+cd "Projet RabbitMQ Kafka"
+
+# Script PowerShell avec couleurs
+.\setup_and_run.ps1
+```
+
+**✨ Les scripts automatisent complètement :**
 
 1. ✅ **Vérification des prérequis** : Python 3, pip3, Docker, Docker Compose
 2. 📦 **Installation dépendances** : `pip install -r requirements.txt`
 3. 🐳 **Démarrage Docker** : Vérification que le daemon Docker fonctionne
 4. 🚀 **Lancement système** : `docker-compose up --build -d`
 5. 📋 **Instructions finales** : URLs d'accès et commandes utiles
+
+**Scripts disponibles :**
+- `setup_and_run.sh` - Script bash (Linux/macOS/WSL)
+- `setup_and_run.bat` - Script batch Windows
+- `setup_and_run.ps1` - Script PowerShell avec couleurs
 
 **Après exécution :**
 - ✅ **Interface Web** : http://localhost:5001
@@ -211,7 +237,9 @@ Projet RabbitMQ Kafka/
 ├── 📄 DOCUMENTATION_TECHNIQUE.md     # Documentation détaillée
 ├── 📄 requirements.txt               # Dépendances Python
 ├── 📄 docker-compose.yml             # Orchestration complète
-├── 📄 setup_and_run.sh              # 🌟 Script d'installation automatique
+├── 📄 setup_and_run.sh              # 🌟 Script d'installation automatique (Linux/macOS)
+├── 📄 setup_and_run.bat             # 🌟 Script d'installation automatique (Windows CMD)
+├── 📄 setup_and_run.ps1             # 🌟 Script d'installation automatique (Windows PowerShell)
 ├── 📄 start_system.py                # Script de démarrage assisté
 ├──📁 config/
 │   └── rabbitmq_config.py           # Configuration centralisée

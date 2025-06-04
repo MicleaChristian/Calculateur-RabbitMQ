@@ -826,21 +826,29 @@ docker-compose ps
 
 ### 🛠️ Scripts et Outils
 
-#### Script d'Installation Automatique (setup_and_run.sh)
-**Script "Do It All" pour démarrage ultra-rapide**
+#### Script d'Installation Automatique (setup_and_run.sh/bat/ps1)
+**Scripts "Do It All" pour démarrage ultra-rapide multi-plateforme**
 
 ```bash
-# Usage simple
+# Linux / macOS / WSL
 ./setup_and_run.sh
+
+# Windows Command Prompt
+setup_and_run.bat
+
+# Windows PowerShell (recommandé)
+.\setup_and_run.ps1
 ```
 
-**Fonctionnalités automatisées :**
+**Fonctionnalités automatisées (identiques sur toutes les plateformes) :**
 
 1. **🔍 Vérification des prérequis**
    ```bash
    # Vérifie Python 3 et pip
-   python3 --version
-   pip3 --version || python3 -m pip --version
+   python3 --version  # Linux/macOS
+   python --version   # Windows
+   pip3 --version || python3 -m pip --version  # Linux/macOS
+   pip --version || python -m pip --version    # Windows
    
    # Vérifie Docker et Docker Compose
    docker --version
@@ -851,7 +859,8 @@ docker-compose ps
 2. **📦 Installation des dépendances**
    ```bash
    # Installation automatique
-   pip3 install -r requirements.txt
+   pip3 install -r requirements.txt  # Linux/macOS
+   pip install -r requirements.txt   # Windows
    
    # Gestion d'erreurs et feedback coloré
    ```
@@ -885,10 +894,19 @@ docker-compose ps
    docker-compose down      # Arrêter le système
    ```
 
+**Spécificités par plateforme :**
+
+| Script | Plateforme | Couleurs | Pause finale |
+|--------|------------|----------|--------------|
+| `setup_and_run.sh` | Linux/macOS/WSL | ✅ Bash colors | ❌ |
+| `setup_and_run.bat` | Windows CMD | ❌ Basique | ✅ pause |
+| `setup_and_run.ps1` | Windows PowerShell | ✅ PowerShell colors | ✅ Read-Host |
+
 **Gestion d'erreurs robuste :**
 - Vérifications séquentielles avec arrêt en cas d'échec
 - Messages d'erreur explicites avec suggestions de résolution
-- Logs colorés avec émojis pour navigation visuelle
+- Logs colorés avec émojis pour navigation visuelle (sauf .bat)
 - Support Docker Compose v1 et v2 automatique
+- Instructions d'installation spécifiques par OS
 
 #### Script de Démarrage Assisté (start_system.py) 

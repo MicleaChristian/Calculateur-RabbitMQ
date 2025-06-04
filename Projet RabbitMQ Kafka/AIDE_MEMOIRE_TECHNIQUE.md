@@ -4,8 +4,14 @@
 
 ### 🎯 Installation Ultra-Rapide (Script Automatique)
 ```bash
-# Script "Do It All" - La façon la plus simple
+# Linux / macOS / WSL
 ./setup_and_run.sh
+
+# Windows Command Prompt
+setup_and_run.bat
+
+# Windows PowerShell (recommandé - avec couleurs)
+.\setup_and_run.ps1
 
 # Le script automatise tout :
 # ✅ Vérifications des prérequis (Python, Docker, Docker Compose)
@@ -189,7 +195,9 @@ docker exec rabbitmq-server rabbitmqctl list_queues
 - `src/client_producer.py` - Client automatique
 
 ### Scripts Utiles
-- `setup_and_run.sh` - 🌟 Installation automatique complète
+- `setup_and_run.sh` - 🌟 Installation automatique complète (Linux/macOS)
+- `setup_and_run.bat` - 🌟 Installation automatique complète (Windows CMD)
+- `setup_and_run.ps1` - 🌟 Installation automatique complète (Windows PowerShell)
 - `start_system.py` - Démarrage assisté
 - `tests/test_system.py` - Tests d'intégration
 
@@ -224,7 +232,9 @@ docker-compose ps
 ### Commandes Rapides
 ```bash
 # Installation et démarrage ultra-rapide
-alias quick-start="./setup_and_run.sh"
+alias quick-start="./setup_and_run.sh"          # Linux/macOS
+alias quick-start-win="setup_and_run.bat"       # Windows CMD
+alias quick-start-ps=".\setup_and_run.ps1"      # Windows PowerShell
 
 # Démarrage rapide développement
 alias rabbitmq-start="docker start rabbitmq-server"

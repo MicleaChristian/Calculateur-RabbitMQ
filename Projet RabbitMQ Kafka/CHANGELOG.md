@@ -68,12 +68,13 @@ stats = {
 
 ### 🛠️ Scripts et Outils
 
-#### Script d'Installation Automatique (setup_and_run.sh)
-- **Script "Do It All"** : Installation et démarrage en une seule commande
+#### Script d'Installation Automatique (setup_and_run.sh/bat/ps1)
+- **Scripts "Do It All"** : Installation et démarrage en une seule commande
+- **Support multi-plateforme** : Linux/macOS (.sh), Windows CMD (.bat), Windows PowerShell (.ps1)
 - **Vérifications automatiques** : Python, pip, Docker, Docker Compose
 - **Gestion d'erreurs robuste** : Messages explicites et suggestions
 - **Support multi-versions** : Docker Compose v1 et v2
-- **Feedback coloré** : Logs avec émojis et couleurs
+- **Feedback coloré** : Logs avec émojis et couleurs (bash et PowerShell)
 - **Instructions finales** : URLs d'accès et commandes utiles
 
 #### Script de Démarrage Assisté (start_system.py)
