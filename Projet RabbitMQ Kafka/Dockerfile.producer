@@ -13,13 +13,12 @@ COPY config/ ./config/
 COPY utils/ ./utils/
 COPY src/client_producer.py ./
 
-# Script d'entrée pour lancer le producteur avec l'intervalle défini par variable d'environnement
-COPY <<EOF entrypoint.sh
-#!/bin/bash
-python client_producer.py --interval \${CLIENT_SEND_INTERVAL:-5}
-EOF
+# Variable d'environnement par défaut
+ENV CLIENT_SEND_INTERVAL=5
 
-RUN chmod +x entrypoint.sh
+# Script d'entrée pour supporter les variables d'environnement
+RUN echo '#!/bin/sh\npython client_producer.py --interval $CLIENT_SEND_INTERVAL' > /app/entrypoint.sh && \
+    chmod +x /app/entrypoint.sh
 
 # Commande de démarrage
-CMD ["./entrypoint.sh"] 
+CMD ["/app/entrypoint.sh"] 

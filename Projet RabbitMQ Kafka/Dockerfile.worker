@@ -13,13 +13,12 @@ COPY config/ ./config/
 COPY utils/ ./utils/
 COPY src/worker.py ./
 
-# Script d'entrée pour lancer le worker avec l'opération définie par variable d'environnement
-COPY <<EOF entrypoint.sh
-#!/bin/bash
-python worker.py \${WORKER_OPERATION:-add} --verbose
-EOF
+# Variable d'environnement par défaut
+ENV WORKER_OPERATION=add
 
-RUN chmod +x entrypoint.sh
+# Script d'entrée pour supporter les variables d'environnement
+RUN echo '#!/bin/sh\npython worker.py $WORKER_OPERATION --verbose' > /app/entrypoint.sh && \
+    chmod +x /app/entrypoint.sh
 
 # Commande de démarrage
-CMD ["./entrypoint.sh"] 
+CMD ["/app/entrypoint.sh"] 
