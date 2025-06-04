@@ -1,0 +1,179 @@
+version: '3.8'
+
+services:
+  # RabbitMQ Server avec interface de management
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-server
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"      # Port AMQP
+      - "15672:15672"    # Interface de management
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - rabbitmq-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+  # Interface Web
+  web-interface:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: web-interface
+    ports:
+      - "5001:5000"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=admin123
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - rabbitmq-network
+    restart: unless-stopped
+
+  # Workers pour les différentes opérations
+  worker-add-1:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: worker-add-1
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=admin123
+      - WORKER_OPERATION=add
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - rabbitmq-network
+    restart: unless-stopped
+
+  worker-add-2:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: worker-add-2
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=admin123
+      - WORKER_OPERATION=add
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - rabbitmq-network
+    restart: unless-stopped
+
+  worker-sub:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: worker-sub
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=admin123
+      - WORKER_OPERATION=sub
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - rabbitmq-network
+    restart: unless-stopped
+
+  worker-mul:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: worker-mul
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=admin123
+      - WORKER_OPERATION=mul
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - rabbitmq-network
+    restart: unless-stopped
+
+  worker-div:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: worker-div
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=admin123
+      - WORKER_OPERATION=div
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - rabbitmq-network
+    restart: unless-stopped
+
+  # Client producteur automatique
+  producer:
+    build:
+      context: .
+      dockerfile: Dockerfile.producer
+    container_name: client-producer
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=admin123
+      - CLIENT_SEND_INTERVAL=3
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - rabbitmq-network
+    restart: unless-stopped
+
+  # Consommateur de résultats
+  consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile.consumer
+    container_name: result-consumer
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=admin123
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - rabbitmq-network
+    restart: unless-stopped
+
+networks:
+  rabbitmq-network:
+    driver: bridge
+
+volumes:
+  rabbitmq_data: 

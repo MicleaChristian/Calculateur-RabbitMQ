@@ -1,0 +1,25 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Copier les fichiers de dépendances
+COPY requirements.txt .
+
+# Installer les dépendances
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copier le code source
+COPY config/ ./config/
+COPY utils/ ./utils/
+COPY src/worker.py ./
+
+# Script d'entrée pour lancer le worker avec l'opération définie par variable d'environnement
+COPY <<EOF entrypoint.sh
+#!/bin/bash
+python worker.py \${WORKER_OPERATION:-add} --verbose
+EOF
+
+RUN chmod +x entrypoint.sh
+
+# Commande de démarrage
+CMD ["./entrypoint.sh"] 
